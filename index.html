@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pool Bar Menu</title>
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  transition: 0.5s;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+button {
+  padding:20px 40px;
+  font-size:20px;
+  margin:20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.giorno {
+  background: linear-gradient(to bottom, #87CEEB, #ffffff);
+  color:#003366;
+}
+
+.giorno button {
+  background:#20c997;
+  color:white;
+}
+
+.notte {
+  background: linear-gradient(to bottom, #0a1f44, #000000);
+  color:white;
+}
+
+.notte button {
+  background:#00e0b8;
+  color:#000;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Pool Bar</h1>
+<p>Scegli il tuo menu</p>
+
+<button onclick="window.location.href='https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link">
+🍹 Drink Menu
+</button>
+
+<button onclick="window.location.href='https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link">
+🍿 Snack Menu
+</button>
+</div>
+
+<script>
+let ora = new Date().getHours();
+
+if (ora >= 7 && ora < 19) {
+  document.body.classList.add("giorno");
+} else {
+  document.body.classList.add("notte");
+}
+</script>
+
+</body>
+</html>

@@ -1,147 +1,64 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pool Bar Menu</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Arial, sans-serif;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* evita scroll indesiderato */
+    font-family: Arial, sans-serif;
+  }
 
-#container {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* assicura che l'immagine occupi tutta l'altezza dello schermo */
-  overflow: hidden;
-}
+  #container {
+    width: 100%;
+    height: 100vh; /* viewport height */
+    background-image: url ('https://export-download.canva.com/NHtus/DAHBeuNHtus/15/0/0001-9094387756678912933.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260215%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260215T184930Z&X-Amz-Expires=65873&X-Amz-Signature=5aa82b2652636591e1081ba04082f5f6e9b9403f23477cce10c6b7d4c161c718&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25201.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A07%3A23%20GMT');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+  }
 
-#menu-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* fa sì che l'immagine riempia tutto lo spazio adattandosi */
-  display: block;
-}
-/* Contenitore full screen */
-#container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
+  #overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    pointer-events: none;
+  }
 
-/* Immagini sfondo sovrapposte per fade */
-.bg {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: opacity 2s ease-in-out; /* transizione morbida */
-}
-
-/* Overlay vetro */
-#overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.3);
-  pointer-events: none;
-}
-
-/* Pulsanti cliccabili */
-.area {
-  position: absolute;
-  display: block;
-  /* background: rgba(255,0,0,0.2); */ /* solo per test */
-}
-.area:hover {
-  outline: 2px solid rgba(255,255,255,0.5);
-}
+  .area {
+    position: absolute;
+    display: block;
+    /* Per test, attiva colore rosso trasparente */
+    /* background: rgba(255, 0, 0, 0.2); */
+  }
+  .area:hover {
+    outline: 2px solid rgba(255,255,255,0.5);
+  }
 </style>
 </head>
 <body>
 
 <div id="container">
-  <!-- Sfondo giorno -->
-  <img id="bg-day" class="bg" src="https://export-download.canva.com/NHtus/DAHBeuNHtus/15/0/0001-9094387756678912933.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260215%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260215T184930Z&X-Amz-Expires=65873&X-Amz-Signature=5aa82b2652636591e1081ba04082f5f6e9b9403f23477cce10c6b7d4c161c718&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25201.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A07%3A23%20GMT" style="opacity:1;">
-  <!-- Sfondo notte -->
-  <img id="bg-night" class="bg" src="https://export-download.canva.com/EuWdQ/DAHBe7EuWdQ/7/0/0001-8980671869412590067.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260216%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260216T040221Z&X-Amz-Expires=34638&X-Amz-Signature=70a474a52c286a1a4d7a049501a0496ea3094be0cbdec975cea08c3d8824f61b&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25202.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A39%3A39%20GMT" style="opacity:0;">
-
-  <!-- Overlay vetro -->
   <div id="overlay"></div>
 
-  <!-- Pulsante Drink Menu -->
-  <a class="area" href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link" 
-     style="top:38%; left:20%; width:60%; height:10%;"></a>
-
-  <!-- Pulsante Snack Menu -->
-  <a class="area" href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link" 
-     style="top:52%; left:20%; width:60%; height:10%;"></a>
+  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link" class="area" style="top:38%; left:20%; width:60%; height:10%;"></a>
+  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link" class="area" style="top:52%; left:20%; width:60%; height:10%;"></a>
 </div>
-function updateBackground() {
-  let ora = new Date().getHours();
-  let minuti = new Date().getMinutes();
-  let day = document.getElementById("bg-day");
-  let night = document.getElementById("bg-night");
 
-  // Esempio fade graduale tramonto/alba
-  if (ora >= 6 && ora < 19) {
-    // giorno
-    day.style.opacity = 1;
-    night.style.opacity = 0;
-  } else if (ora >= 19 && ora < 20) {
-    // tramonto → fade graduale
-    let percent = (ora + minuti/60 - 19); // 0→1
-    day.style.opacity = 1 - percent;
-    night.style.opacity = percent;
-  } else if (ora >= 5 && ora < 6) {
-    // alba
-    let percent = (ora + minuti/60 - 5); // 0→1
-    day.style.opacity = percent;
-    night.style.opacity = 1 - percent;
-  } else {
-    // notte
-    day.style.opacity = 0;
-    night.style.opacity = 1;
-  }
-}
-
-// Aggiorna subito
-updateBackground();
-
-// Aggiorna ogni 30 secondi
-setInterval(updateBackground, 30000);
 <script>
-// Ottieni l'ora
-let ora = new Date().getHours();
-let day = document.getElementById("bg-day");
-let night = document.getElementById("bg-night");
-
-// Imposta opacità in base all'orario
-if (ora >= 7 && ora < 19) {
-  // giorno predominante
-  day.style.opacity = 1;
-  night.style.opacity = 0;
-} else {
-  // notte predominante
-  day.style.opacity = 0;
-  night.style.opacity = 1;
-}
-
-// Per effetto sfumato graduale (opzionale)
-// Se vuoi transizione al tramonto/alba tra 18:30 e 19:30, etc.
-// puoi usare setInterval per modificare l'opacità gradualmente
+  const ora = new Date().getHours();
+  const container = document.getElementById('container');
+  if (ora >= 7 && ora < 19) {
+    container.style.backgroundImage = "url ( 'https://export-download.canva.com/NHtus/DAHBeuNHtus/15/0/0001-9094387756678912933.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260215%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260215T184930Z&X-Amz-Expires=65873&X-Amz-Signature=5aa82b2652636591e1081ba04082f5f6e9b9403f23477cce10c6b7d4c161c718&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25201.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A07%3A23%20GMT') ";
+  } else {
+    container.style.backgroundImage = "url ( 'https://export-download.canva.com/EuWdQ/DAHBe7EuWdQ/7/0/0001-8980671869412590067.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260216%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260216T040221Z&X-Amz-Expires=34638&X-Amz-Signature=70a474a52c286a1a4d7a049501a0496ea3094be0cbdec975cea08c3d8824f61b&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25202.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A39%3A39%20GMT' ) ";
+  }
 </script>
 
 </body>

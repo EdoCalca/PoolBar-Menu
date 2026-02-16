@@ -71,7 +71,39 @@ html, body {
   <a class="area" href="LINK_SNACK" 
      style="top:52%; left:20%; width:60%; height:10%;"></a>
 </div>
+function updateBackground() {
+  let ora = new Date().getHours();
+  let minuti = new Date().getMinutes();
+  let day = document.getElementById("bg-day");
+  let night = document.getElementById("bg-night");
 
+  // Esempio fade graduale tramonto/alba
+  if (ora >= 6 && ora < 19) {
+    // giorno
+    day.style.opacity = 1;
+    night.style.opacity = 0;
+  } else if (ora >= 19 && ora < 20) {
+    // tramonto → fade graduale
+    let percent = (ora + minuti/60 - 19); // 0→1
+    day.style.opacity = 1 - percent;
+    night.style.opacity = percent;
+  } else if (ora >= 5 && ora < 6) {
+    // alba
+    let percent = (ora + minuti/60 - 5); // 0→1
+    day.style.opacity = percent;
+    night.style.opacity = 1 - percent;
+  } else {
+    // notte
+    day.style.opacity = 0;
+    night.style.opacity = 1;
+  }
+}
+
+// Aggiorna subito
+updateBackground();
+
+// Aggiorna ogni 30 secondi
+setInterval(updateBackground, 30000);
 <script>
 // Ottieni l'ora
 let ora = new Date().getHours();

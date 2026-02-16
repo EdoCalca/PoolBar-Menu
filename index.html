@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,68 +9,63 @@ body {
   margin:0;
   font-family: Arial, sans-serif;
   text-align:center;
-  transition: 0.5s;
+  transition: background-image 0.5s ease-in-out;
 }
 
-.container {
-  margin-top: 100px;
+/* Contenitore immagine */
+#container {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* puoi cambiare */
+  margin: auto;
 }
 
-button {
-  padding:20px 40px;
-  font-size:20px;
-  margin:20px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
+/* Immagine sfondo */
+#menu-bg {
+  width: 100%;
+  display: block;
 }
 
-.giorno {
-  background: linear-gradient(to bottom, #87CEEB, #ffffff);
-  color:#003366;
+/* Aree cliccabili */
+.area {
+  position: absolute;
+  display: block;
 }
 
-.giorno button {
-  background:#20c997;
-  color:white;
-}
-
-.notte {
-  background: linear-gradient(to bottom, #0a1f44, #000000);
-  color:white;
-}
-
-.notte button {
-  background:#00e0b8;
-  color:#000;
+/* Esempio: colore trasparente, serve solo per test se vuoi */
+.area:hover {
+  outline: 2px solid rgba(255,255,255,0.5);
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-<h1>Pool Bar</h1>
-<p>Scegli il tuo menu</p>
+<div id="container">
+  <!-- Immagine che cambia automaticamente -->
+  <img id="menu-bg" src="https://export-download.canva.com/NHtus/DAHBeuNHtus/15/0/0001-9094387756678912933.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260215%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260215T184930Z&X-Amz-Expires=65873&X-Amz-Signature=5aa82b2652636591e1081ba04082f5f6e9b9403f23477cce10c6b7d4c161c718&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25201.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A07%3A23%20GMT>
 
-<button onclick="window.location.href='https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link">
-🍹 Drink Menu
-</button>
+  <!-- Aree cliccabili -->
+  <!-- Drink -->
+  <a class="area" href="LINK_DRINK" style="top:40%; left:10%; width:30%; height:10%;"></a>
 
-<button onclick="window.location.href='https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link">
-🍿 Snack Menu
-</button>
+  <!-- Snack -->
+  <a class="area" href="LINK_SNACK" style="top:55%; left:10%; width:30%; height:10%;"></a>
 </div>
 
 <script>
 let ora = new Date().getHours();
+let bg = document.getElementById("menu-bg");
 
 if (ora >= 7 && ora < 19) {
-  document.body.classList.add("giorno");
+  bg.src = "https://export-download.canva.com/NHtus/DAHBeuNHtus/15/0/0001-9094387756678912933.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260215%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260215T184930Z&X-Amz-Expires=65873&X-Amz-Signature=5aa82b2652636591e1081ba04082f5f6e9b9403f23477cce10c6b7d4c161c718&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25201.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A07%3A23%20GMT";// immagine giorno
 } else {
-  document.body.classList.add("notte");
+  bg.src = "https://export-download.canva.com/EuWdQ/DAHBe7EuWdQ/7/0/0001-8980671869412590067.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260216%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260216T040221Z&X-Amz-Expires=34638&X-Amz-Signature=70a474a52c286a1a4d7a049501a0496ea3094be0cbdec975cea08c3d8824f61b&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Prova%25202.png&response-expires=Mon%2C%2016%20Feb%202026%2013%3A39%3A39%20GMT";   // immagine notte
 }
 </script>
-
+  
+.area {
+  background: rgba(255,0,0,0.3); /* rosso semi-trasparente solo per test */
+}
 </body>
 </html>

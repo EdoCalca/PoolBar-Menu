@@ -11,7 +11,25 @@ html, body {
   height: 100%;
   font-family: Arial, sans-serif;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
+#container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* assicura che l'immagine occupi tutta l'altezza dello schermo */
+  overflow: hidden;
+}
+
+#menu-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fa sì che l'immagine riempia tutto lo spazio adattandosi */
+  display: block;
+}
 /* Contenitore full screen */
 #container {
   position: relative;

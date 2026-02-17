@@ -1,64 +1,88 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pool Bar Menu</title>
+
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden; /* evita scroll indesiderato */
-    font-family: Arial, sans-serif;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: #000;
+}
 
-  #container {
-    width: 100%;
-    height: 100vh; /* viewport height */
-    background-image: url "https://i.imgur.com/H6FiANl.jpeg" ;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-  }
+#container {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  transition: background-image 0.5s ease-in-out;
+}
 
-  #overlay {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.3);
-    pointer-events: none;
-  }
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.15);
+  pointer-events: none;
+}
 
-  .area {
-    position: absolute;
-    display: block;
-    /* Per test, attiva colore rosso trasparente */
-    /* background: rgba(255, 0, 0, 0.2); */
-  }
-  .area:hover {
-    outline: 2px solid rgba(255,255,255,0.5);
-  }
+.area {
+  position: absolute;
+  display: block;
+}
+
+.area:active {
+  background: rgba(255,255,255,0.05);
+}
 </style>
 </head>
+
 <body>
 
 <div id="container">
   <div id="overlay"></div>
 
-  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link" class="area" style="top:38%; left:20%; width:60%; height:10%;"></a>
-  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link" class="area" style="top:52%; left:20%; width:60%; height:10%;"></a>
+  <!-- ZONA CLICK 1 -->
+  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link"
+     class="area"
+     style="top:38%; left:10%; width:80%; height:12%;"></a>
+
+  <!-- ZONA CLICK 2 -->
+  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link"
+     class="area"
+     style="top:54%; left:10%; width:80%; height:12%;"></a>
 </div>
 
 <script>
+const imgDay = "https://i.imgur.com/CJkjhg6.jpeg";
+const imgNight = "https://i.imgur.com/CJkjhg6.jpeg"; // puoi cambiarla
+
+const preload = new Image();
+const preload2 = new Image();
+
+preload.src = imgDay;
+preload2.src = imgNight;
+
+const container = document.getElementById("container");
+
+function setBackground() {
   const ora = new Date().getHours();
-  const container = document.getElementById('container');
-  if (ora >= 7 && ora < 19) {
-    container.style.backgroundImage =  url( " https://i.imgur.com/H6FiANl.jpeg" ) ;
-  } else {
-    container.style.backgroundImage =  url( " https://i.imgur.com/CJkjhg6.jpeg" ) ;
-  }
+  container.style.backgroundImage = `url("${ora >= 7 && ora < 19 ? imgDay : imgNight}")`;
+}
+
+preload.onload = () => {
+  setBackground();
+};
+
+setInterval(setBackground, 60000); // aggiorna ogni minuto
 </script>
 
 </body>

@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pool Bar Menu</title>
 
+<link rel="manifest" href="manifest.json">
+
 <style>
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #000;
 }
 
@@ -21,15 +23,11 @@ html, body {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  transition: background-image 0.5s ease-in-out;
 }
 
 #overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.15);
   pointer-events: none;
 }
@@ -37,10 +35,7 @@ html, body {
 .area {
   position: absolute;
   display: block;
-}
-
-.area:active {
-  background: rgba(255,255,255,0.05);
+  -webkit-tap-highlight-color: transparent;
 }
 </style>
 </head>
@@ -50,39 +45,37 @@ html, body {
 <div id="container">
   <div id="overlay"></div>
 
-  <!-- ZONA CLICK 1 -->
-  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link"
-     class="area"
-     style="top:38%; left:10%; width:80%; height:12%;"></a>
-
-  <!-- ZONA CLICK 2 -->
-  <a href="https://drive.google.com/drive/folders/15zs0k_1Ow_F6rPbovsQO2Qv5IbRQv12X?usp=share_link"
-     class="area"
-     style="top:54%; left:10%; width:80%; height:12%;"></a>
+  <a href="menu.pdf" class="area" style="top:38%; left:10%; width:80%; height:12%;"></a>
+  <a href="cocktail.pdf" class="area" style="top:54%; left:10%; width:80%; height:12%;"></a>
 </div>
 
 <script>
 const imgDay = "https://i.imgur.com/CJkjhg6.jpeg";
-const imgNight = "https://i.imgur.com/CJkjhg6.jpeg"; // puoi cambiarla
-
-const preload = new Image();
-const preload2 = new Image();
-
-preload.src = imgDay;
-preload2.src = imgNight;
+const imgNight = "https://i.imgur.com/CJkjhg6.jpeg";
 
 const container = document.getElementById("container");
 
-function setBackground() {
-  const ora = new Date().getHours();
-  container.style.backgroundImage = `url("${ora >= 7 && ora < 19 ? imgDay : imgNight}")`;
+function preload(src){
+  return new Promise(r => {
+    const i = new Image();
+    i.onload = r;
+    i.src = src;
+  });
 }
 
-preload.onload = () => {
-  setBackground();
-};
+async function start(){
+  await Promise.all([ preload(imgDay), preload(imgNight) ]);
 
-setInterval(setBackground, 60000); // aggiorna ogni minuto
+  const h = new Date().getHours();
+  container.style.backgroundImage =
+    `url("${h >= 7 && h < 19 ? imgDay : imgNight}")`;
+}
+
+start();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
 </script>
 
 </body>

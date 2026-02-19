@@ -27,25 +27,6 @@ html, body {
   transform: scale(1.05);
   transition: opacity 0.8s ease, transform 1.2s ease, background-image 0.6s ease-in-out;
 }
-  <div id="welcome">Welcome to Pool Bar</div>
-#welcome {
-  position: absolute;
-  top: 40%;
-  width: 100%;
-  text-align: center;
-  color: gold;
-  opacity: 0;
-  transition: 1s;
-}
-
-#menuBox {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-#menuBox.active {
-  opacity: 1;
-}
 
 #container.loaded {
   opacity: 1;
@@ -55,27 +36,51 @@ html, body {
 #overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.25);
   pointer-events: none;
+  transition: background 0.5s ease;
 }
 
-/* BOTTONI CLICCABILI */
+/* CLICK AREE */
 .area {
   position: absolute;
   display: block;
   border-radius: 30px;
   -webkit-tap-highlight-color: transparent;
 }
+
 .area:active {
   transform: scale(0.96);
   box-shadow: 0 0 20px rgba(212,175,55,0.5);
 }
+
+/* SWITCH */
+#toggleTheme {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* MENU OVERLAY */
 #menuBox {
   position: fixed;
   inset: 0;
   background: black;
   display: none;
   z-index: 100;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#menuBox.active {
+  display: block;
+  opacity: 1;
 }
 
 #menuBox iframe {
@@ -93,22 +98,7 @@ html, body {
   color: white;
   border: none;
   font-size: 20px;
-  padding: 5px 10px;
-}
-
-/* SWITCH GIORNO / NOTTE */
-#toggleTheme {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 10;
-
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border: none;
-  border-radius: 50px;
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 6px 10px;
 }
 </style>
 </head>
@@ -121,33 +111,38 @@ html, body {
   <!-- SWITCH -->
   <button id="toggleTheme">🌙</button>
 
-  <div id="menuBox" style="display:none; position:fixed; inset:0; background:black;">
-  <iframe src="drink.pdf" style="width:100%; height:100%; border:none;"></iframe>
-</div>
-
-  <!-- 🍸 DRINK LIST -->
-  <a onclick="openMenu('Drink Menu.pdf')" class="area">
+  <!-- 🍸 DRINK -->
+  <a onclick="openMenu('Drink Menu.pdf')"
+     class="area"
      style="top:37%; left:10%; width:80%; height:10%;">
   </a>
 
-  <!-- 🥪 SNACK MENU -->
- <a onclick="openMenu('Drink Menu.pdf')" class="area">
+  <!-- 🥪 SNACK -->
+  <a onclick="openMenu('Drink Menu.pdf')"
+     class="area"
      style="top:61%; left:10%; width:80%; height:10%;">
   </a>
 
 </div>
 
+<!-- MENU -->
+<div id="menuBox">
+  <button onclick="closeMenu()">✕</button>
+  <iframe id="menuFrame"></iframe>
+</div>
+
 <script>
-// 🔗 METTI QUI I TUOI LINK GIUSTI
-const imgDay = "https://edocalca.github.io/PoolBar-Menu/Foto-Giorno.png";
-const imgNight = "https://edocalca.github.io/PoolBar-Menu/Foto-Notte.png";
+// 🔗 IMMAGINI
+const imgDay = "https://edocalca.github.io/PoolBar-Menu/Foto-Giorno.jpg";
+const imgNight = "https://edocalca.github.io/PoolBar-Menu/Foto-Notte.jpg";
 
 const container = document.getElementById("container");
 const btn = document.getElementById("toggleTheme");
+const overlay = document.getElementById("overlay");
 
 let isNight = localStorage.getItem("theme") === "night";
 
-// preload immagini
+// preload
 function preload(src){
   return new Promise(resolve => {
     const img = new Image();
@@ -156,56 +151,58 @@ function preload(src){
   });
 }
 
-// avvio
-async function start(){
-  await Promise.all([preload(imgDay), preload(imgNight)]);
-
+// aggiorna tema
+function updateTheme(){
   container.style.backgroundImage =
     `url("${isNight ? imgNight : imgDay}")`;
 
-  btn.textContent = isNight ? "☀️" : "🌙";
+  overlay.style.background =
+    isNight ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.25)";
 
-  // animazione entrata
+  container.style.filter =
+    isNight ? "brightness(0.85) contrast(1.1)" : "brightness(1)";
+
+  btn.textContent = isNight ? "☀️" : "🌙";
+}
+
+// avvio
+async function start(){
+  await Promise.all([preload(imgDay), preload(imgNight)]);
+  updateTheme();
+
   setTimeout(() => {
     container.classList.add("loaded");
   }, 50);
 }
-const lang = navigator.language;
 
-if(lang.startsWith("en")){
-  // apri menu inglese
-}
+start();
+
+// switch tema
+btn.addEventListener("click", () => {
+  isNight = !isNight;
+  updateTheme();
+  localStorage.setItem("theme", isNight ? "night" : "day");
+});
+
+// MENU
 function openMenu(file){
+  const box = document.getElementById("menuBox");
   document.getElementById("menuFrame").src = file;
-  document.getElementById("menuBox").style.display = "block";
+
+  box.style.display = "block";
+  setTimeout(() => box.classList.add("active"), 10);
 }
 
 function closeMenu(){
-  document.getElementById("menuBox").style.display = "none";
+  const box = document.getElementById("menuBox");
+  box.classList.remove("active");
+
+  setTimeout(() => {
+    box.style.display = "none";
+    document.getElementById("menuFrame").src = "";
+  }, 300);
 }
-
-start();
-  
-document.getElementById("menuBox").style.display = "block";
-
-// switch giorno/notte
-btn.addEventListener("click", () => {
-  isNight = !isNight;
-
-  container.style.backgroundImage =
-    `url("${isNight ? imgNight : imgDay}")`;
-  
-const h = new Date().getHours();
-  
-isNight = h >= 19 || h < 7;
-
-  btn.textContent = isNight ? "☀️" : "🌙";
-navigator.vibrate(10);
-
-  localStorage.setItem("theme", isNight ? "night" : "day");
-});
 </script>
 
 </body>
 </html>
-

@@ -4,19 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pool Bar Menu</title>
-<div id="menuBox">
-  <button onclick="closeMenu()">✕</button>
 
- <div id="loader">⋯</div>
-
-  <iframe id="menuFrame"></iframe>
-</div>
-
-
-
-<!-- FONT ELEGANTI -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Montserrat:wght@300&display=swap" rel="stylesheet">
-
 
 <style>
 html, body {
@@ -25,104 +14,39 @@ html, body {
   height: 100%;
   overflow: hidden;
   background: #000;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* INTRO */
 #intro {
   position: fixed;
   inset: 0;
-  background: black;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 200;
-  opacity: 1;
   transition: opacity 1s ease;
-}
-
-#intro.hide {
-  opacity: 0;
-  visibility: hidden; /* 🔥 importante */
-}
-
-
-.logo-img {
-  width: 180px;
-  max-width: 70%;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: all 1.2s ease;
-}
-
-.subtitle {
-  .subtitle {
-  font-family: 'Montserrat', sans-serif;
-  color: #D4AF37;
-  letter-spacing: 4px;
-  font-size: 14px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 1.2s ease;}
-  
-.logo-text {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 38px;
-  letter-spacing: 4px;
-  color: #D4AF37;
-}
-
-}
-
-  color: #D4AF37;
-  letter-spacing: 4px;
-  font-size: 14px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 1.2s ease;
-}
-  
-#loader {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  text-align: center;
-  color: #D4AF37;
-  font-family: 'Montserrat';
-  font-size: 16px;
-  z-index: 200;
-  transform: translateY(-50%);
-  font-size: 30px;
-  letter-spacing: 10px;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
-}
-
-}
-
-}
-
-
-#intro.hide {
-  opacity: 0;
-  pointer-events: none;
 }
 
 .logo-img {
   width: 180px;
   max-width: 70%;
   margin-bottom: 20px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 1.2s ease;
 }
 
 .subtitle {
-  font-family: 'Montserrat', sans-serif;
-  color: white;
-  letter-spacing: 3px;
-  font-size: 14px;
+  font-family: 'Cormorant Garamond', serif;
+  color: #D4AF37;
+  font-size: 20px;
+  letter-spacing: 4px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 1.2s ease;
 }
 
 /* CONTAINER */
@@ -132,7 +56,6 @@ html, body {
   background-size: cover;
   background-position: center;
   position: relative;
-
   opacity: 0;
   transform: scale(1.05);
   transition: opacity 1s ease, transform 1.4s ease;
@@ -143,10 +66,11 @@ html, body {
   transform: scale(1);
 }
 
+/* 🔥 OVERLAY PREMIUM */
 #overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.25);
+  transition: background 0.6s ease;
 }
 
 /* BOTTONI */
@@ -247,73 +171,61 @@ const btn = document.getElementById("toggleTheme");
 
 let isNight = false;
 
-// AUTO ORARIO
+// auto giorno/notte
 const hour = new Date().getHours();
 if(hour >= 19 || hour < 7){
   isNight = true;
 }
 
-// TEMA
+// 🔥 TEMA + OVERLAY PREMIUM
 function updateTheme(){
   container.style.backgroundImage =
     `url("${isNight ? imgNight : imgDay}")`;
 
-  overlay.style.background =
-    isNight ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.25)";
+  overlay.style.background = isNight
+    ? "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7))"
+    : "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4))";
 
   btn.textContent = isNight ? "☀️" : "🌙";
 }
 
-// AVVIO SICURO
-function start(){
-  updateTheme();
-
-  container.classList.add("loaded");
-
-  setTimeout(() => {
-    document.getElementById("intro").classList.add("hide");
-  }, 1200);
-  
-  setTimeout(() => {
-  document.querySelector(".logo-img").style.opacity = "1";
-  document.querySelector(".logo-img").style.transform = "scale(1)";
-
-  document.querySelector(".subtitle").style.opacity = "1";
-  document.querySelector(".subtitle").style.transform = "translateY(0)";
-}, 100);
-
-}
-
+// AVVIO
 window.onload = function(){
 
   updateTheme();
 
-  // mostra sito
   container.classList.add("loaded");
 
-  // NASCONDE INTRO SICURO
+  // animazione intro
+  setTimeout(() => {
+    document.querySelector(".logo-img").style.opacity = "1";
+    document.querySelector(".logo-img").style.transform = "scale(1)";
+    document.querySelector(".subtitle").style.opacity = "1";
+    document.querySelector(".subtitle").style.transform = "translateY(0)";
+  }, 100);
+
+  // chiusura intro
   setTimeout(() => {
     const intro = document.getElementById("intro");
-    if(intro){
-      intro.style.opacity = "0";
+    intro.style.opacity = "0";
 
-      setTimeout(() => {
-        intro.style.display = "none"; // 🔥 distrugge intro
-      }, 1000);
-    }
-  }, 1200);
+    setTimeout(() => {
+      intro.style.display = "none";
+    }, 1000);
 
+  }, 1500);
 };
 
-
-// SWITCH
+// switch tema
 btn.addEventListener("click", () => {
   isNight = !isNight;
   updateTheme();
 });
 
-// MENU
+// menu
 function openMenu(file){
+
+  if (navigator.vibrate) navigator.vibrate(10);
 
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     window.location.href = file;
@@ -322,29 +234,10 @@ function openMenu(file){
 
   const box = document.getElementById("menuBox");
   const frame = document.getElementById("menuFrame");
-  const loader = document.getElementById("loader");
 
-  // mostra subito loader
-  loader.style.display = "block";
-  frame.style.display = "none";
-
+  frame.src = file;
   box.style.display = "block";
 
-  setTimeout(() => box.classList.add("active"), 10);
-
-  // ritardo minimo per far vedere loader (trucco UX)
-  setTimeout(() => {
-    frame.src = file;
-  }, 200);
-
-  frame.onload = () => {
-    loader.style.display = "none";
-    frame.style.display = "block";
-  };
-}
-
-
-  box.style.display = "block";
   setTimeout(() => box.classList.add("active"), 10);
 }
 
@@ -361,3 +254,4 @@ function closeMenu(){
 
 </body>
 </html>
+

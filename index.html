@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
+<head> <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pool Bar Menu</title>
@@ -150,6 +151,22 @@ html, body {
   font-size: 20px;
   padding: 6px 10px;
 }
+.logo-img {
+  width: 180px;
+  max-width: 70%;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease;
+}
+
+#intro.show .logo-img {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
 </style>
 </head>
 
@@ -157,9 +174,10 @@ html, body {
 
 
 <div id="intro">
-  <div class="logo">Hotel Sirenetta</div>
+  <img src="logo-sirenetta.png" class="logo-img">
   <div class="subtitle">Pool Bar</div>
 </div>
+
 
 <div id="container">
 
@@ -250,11 +268,27 @@ async function start(){
     document.getElementById("welcome").style.opacity = "0";
   }, 2500);
 }
+setTimeout(() => {
+  document.getElementById("intro").classList.add("show");
+}, 100);
 
 start();
 setTimeout(() => {
   document.getElementById("intro").classList.add("hide");
 }, 1500);
+async function start(){
+  await Promise.all([preload(imgDay), preload(imgNight)]);
+  updateTheme();
+
+  // mostra contenuto
+  container.classList.add("loaded");
+
+  // nasconde intro DOPO poco
+  setTimeout(() => {
+    document.getElementById("intro").classList.add("hide");
+  }, 1200); // 👈 più veloce
+}
+
 
 
 // SWITCH

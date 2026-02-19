@@ -27,6 +27,15 @@ html, body {
   transform: scale(1.05);
   transition: opacity 0.8s ease, transform 1.2s ease, background-image 0.6s ease-in-out;
 }
+  
+#menuBox {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#menuBox.active {
+  opacity: 1;
+}
 
 #container.loaded {
   opacity: 1;
@@ -47,9 +56,9 @@ html, body {
   border-radius: 30px;
   -webkit-tap-highlight-color: transparent;
 }
-
 .area:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
+  box-shadow: 0 0 20px rgba(212,175,55,0.5);
 }
 
 /* SWITCH GIORNO / NOTTE */
@@ -77,6 +86,10 @@ html, body {
   <!-- SWITCH -->
   <button id="toggleTheme">🌙</button>
 
+  <div id="menuBox" style="display:none; position:fixed; inset:0; background:black;">
+  <iframe src="drink.pdf" style="width:100%; height:100%; border:none;"></iframe>
+</div>
+
   <!-- 🍸 DRINK LIST -->
   <a href="drink.pdf"
      class="area"
@@ -93,8 +106,8 @@ html, body {
 
 <script>
 // 🔗 METTI QUI I TUOI LINK GIUSTI
-const imgDay = "https://edocalca.github.io/PoolBar-Menu/Hotel-Sirenetta.jpg";
-const imgNight = "https://edocalca.github.io/PoolBar-Menu/Hotel-Sirenetta-notte.jpg";
+const imgDay = "https://edocalca.github.io/PoolBar-Menu/Hotel-Sirenetta.png";
+const imgNight = "https://edocalca.github.io/PoolBar-Menu/Hotel-Sirenetta-notte.png";
 
 const container = document.getElementById("container");
 const btn = document.getElementById("toggleTheme");
@@ -126,6 +139,8 @@ async function start(){
 }
 
 start();
+  
+document.getElementById("menuBox").style.display = "block";
 
 // switch giorno/notte
 btn.addEventListener("click", () => {

@@ -15,6 +15,39 @@ html, body {
   background: #000;
 }
 
+#intro {
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: #D4AF37;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+#intro.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.logo {
+  font-size: 32px;
+  letter-spacing: 3px;
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: 18px;
+  color: white;
+}
+
+
+
+
 #container {
   width: 100%;
   height: 100dvh;
@@ -25,7 +58,10 @@ html, body {
 
   opacity: 0;
   transform: scale(1.05);
-  transition: opacity 0.8s ease, transform 1.2s ease, background-image 0.6s ease-in-out;
+  #container {
+  transition: opacity 1s ease, transform 1.4s ease;
+}
+
 }
 
 #container.loaded {
@@ -119,6 +155,14 @@ html, body {
 
 <body>
 
+
+<div id="intro">
+  <div class="logo">Hotel Sirenetta</div>
+  <div class="subtitle">Pool Bar</div>
+</div>
+
+<div id="container">
+
 <div id="container">
   <div id="overlay"></div>
 
@@ -129,13 +173,13 @@ html, body {
   <button id="toggleTheme">🌙</button>
 
   <!-- DRINK -->
-  <a onclick="openMenu('drink.pdf')"
+  <a onclick="openMenu('Drink.pdf')"
      class="area"
      style="top:37%; left:10%; width:80%; height:10%;">
   </a>
 
   <!-- SNACK -->
-  <a onclick="openMenu('snack.pdf')"
+  <a onclick="openMenu('Drink.pdf')"
      class="area"
      style="top:61%; left:10%; width:80%; height:10%;">
   </a>
@@ -150,6 +194,11 @@ html, body {
 
 <script>
 // IMMAGINI
+const hour = new Date().getHours();
+if(hour >= 19 || hour < 7){
+  isNight = true;
+}
+
 const imgDay = "https://edocalca.github.io/PoolBar-Menu/Foto-Giorno.jpg";
 const imgNight = "https://edocalca.github.io/PoolBar-Menu/Foto-Notte.jpg";
 
@@ -158,6 +207,7 @@ const btn = document.getElementById("toggleTheme");
 const overlay = document.getElementById("overlay");
 
 let isNight = localStorage.getItem("theme") === "night";
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 // preload immagini
 function preload(src){
@@ -202,6 +252,10 @@ async function start(){
 }
 
 start();
+setTimeout(() => {
+  document.getElementById("intro").classList.add("hide");
+}, 1500);
+
 
 // SWITCH
 btn.addEventListener("click", () => {
@@ -212,6 +266,30 @@ btn.addEventListener("click", () => {
 
 // MENU (SMART)
 function openMenu(file){
+
+  // vibrazione (prima di tutto)
+  if (navigator.vibrate) navigator.vibrate(10);
+
+  // MOBILE → apre PDF normale
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.location.href = file;
+    return;
+  }
+
+  // DESKTOP → overlay
+  const box = document.getElementById("menuBox");
+  const frame = document.getElementById("menuFrame");
+
+  frame.src = file;
+  box.style.display = "block";
+
+  setTimeout(() => box.classList.add("active"), 10);
+}
+
+
+
+{
+
 
   // MOBILE → apre normale (perfetto scroll)
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {

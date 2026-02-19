@@ -31,14 +31,21 @@ html, body {
 #intro {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  background: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 200;
-  transition: opacity 1.2s ease;
+  opacity: 1;
+  transition: opacity 1s ease;
 }
+
+#intro.hide {
+  opacity: 0;
+  visibility: hidden; /* 🔥 importante */
+}
+
 
 .logo-img {
   width: 180px;
@@ -277,7 +284,27 @@ function start(){
 
 }
 
-window.onload = start;
+window.onload = function(){
+
+  updateTheme();
+
+  // mostra sito
+  container.classList.add("loaded");
+
+  // NASCONDE INTRO SICURO
+  setTimeout(() => {
+    const intro = document.getElementById("intro");
+    if(intro){
+      intro.style.opacity = "0";
+
+      setTimeout(() => {
+        intro.style.display = "none"; // 🔥 distrugge intro
+      }, 1000);
+    }
+  }, 1200);
+
+};
+
 
 // SWITCH
 btn.addEventListener("click", () => {

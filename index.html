@@ -255,9 +255,15 @@ async function start(){
   await Promise.all([preload(imgDay), preload(imgNight)]);
   updateTheme();
 
+  // MOSTRA SITO
+  container.classList.add("loaded");
+
+  // NASCONDE INTRO
   setTimeout(() => {
-    container.classList.add("loaded");
-  }, 50);
+    document.getElementById("intro").classList.add("hide");
+  }, 1200);
+}
+
 
   // WELCOME
   setTimeout(() => {

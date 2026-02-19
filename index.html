@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="it">
-<head> <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Montserrat:wght@300&display=swap" rel="stylesheet">
-
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pool Bar Menu</title>
+
+<!-- FONT ELEGANTI -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 
 <style>
 html, body {
@@ -12,21 +14,19 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: system-ui, sans-serif;
   background: #000;
 }
 
+/* INTRO */
 #intro {
   position: fixed;
   inset: 0;
   background: black;
-  color: #D4AF37;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 200;
-  opacity: 1;
   transition: opacity 1s ease;
 }
 
@@ -35,34 +35,30 @@ html, body {
   pointer-events: none;
 }
 
-.logo {
-  font-size: 32px;
-  letter-spacing: 3px;
+.logo-img {
+  width: 180px;
+  max-width: 70%;
+  margin-bottom: 20px;
 }
 
 .subtitle {
-  margin-top: 10px;
-  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
   color: white;
+  letter-spacing: 3px;
+  font-size: 14px;
 }
 
-
-
-
+/* CONTAINER */
 #container {
   width: 100%;
   height: 100dvh;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
   position: relative;
 
   opacity: 0;
   transform: scale(1.05);
-  #container {
   transition: opacity 1s ease, transform 1.4s ease;
-}
-
 }
 
 #container.loaded {
@@ -73,30 +69,13 @@ html, body {
 #overlay {
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  transition: background 0.5s ease;
-}
-
-/* WELCOME */
-#welcome {
-  position: absolute;
-  top: 45%;
-  width: 100%;
-  text-align: center;
-  color: #D4AF37;
-  font-size: 26px;
-  letter-spacing: 3px;
-  opacity: 0;
-  transition: 1s;
-  z-index: 5;
+  background: rgba(0,0,0,0.25);
 }
 
 /* BOTTONI */
 .area {
   position: absolute;
-  display: block;
   border-radius: 30px;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .area:active {
@@ -115,7 +94,6 @@ html, body {
   border: none;
   border-radius: 50px;
   padding: 8px 12px;
-  font-size: 14px;
 }
 
 /* MENU DESKTOP */
@@ -149,94 +127,56 @@ html, body {
   color: white;
   border: none;
   font-size: 20px;
-  padding: 6px 10px;
 }
-.logo-img {
-  width: 180px;
-  max-width: 70%;
-  margin-bottom: 20px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 1s ease;
-}
-
-#intro.show .logo-img {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
-
 </style>
 </head>
 
 <body>
 
-
+<!-- INTRO -->
 <div id="intro">
   <img src="logo-sirenetta.png" class="logo-img">
   <div class="subtitle">Pool Bar</div>
 </div>
 
-
-<div id="container">
-
+<!-- CONTENUTO -->
 <div id="container">
   <div id="overlay"></div>
 
-  <!-- WELCOME -->
-  <div id="welcome">Welcome to Pool Bar</div>
-
-  <!-- SWITCH -->
   <button id="toggleTheme">🌙</button>
 
   <!-- DRINK -->
-  <a onclick="openMenu('Drink.pdf')"
-     class="area"
-     style="top:37%; left:10%; width:80%; height:10%;">
-  </a>
+  <a onclick="openMenu('Drink.pdf')" class="area"
+     style="top:37%; left:10%; width:80%; height:10%;"></a>
 
   <!-- SNACK -->
-  <a onclick="openMenu('Drink.pdf')"
-     class="area"
-     style="top:61%; left:10%; width:80%; height:10%;">
-  </a>
-
+  <a onclick="openMenu('Drink.pdf')" class="area"
+     style="top:61%; left:10%; width:80%; height:10%;"></a>
 </div>
 
-<!-- MENU DESKTOP -->
+<!-- MENU -->
 <div id="menuBox">
   <button onclick="closeMenu()">✕</button>
   <iframe id="menuFrame"></iframe>
 </div>
 
 <script>
-// IMMAGINI
+const imgDay = "https://edocalca.github.io/PoolBar-Menu/Foto-Giorno.jpg";
+const imgNight = "https://edocalca.github.io/PoolBar-Menu/Foto-Notte.jpg";
+
+const container = document.getElementById("container");
+const overlay = document.getElementById("overlay");
+const btn = document.getElementById("toggleTheme");
+
+let isNight = false;
+
+// AUTO ORARIO
 const hour = new Date().getHours();
 if(hour >= 19 || hour < 7){
   isNight = true;
 }
 
-const imgDay = "https://edocalca.github.io/PoolBar-Menu/Foto-Giorno.jpg";
-const imgNight = "https://edocalca.github.io/PoolBar-Menu/Foto-Notte.jpg";
-
-const container = document.getElementById("container");
-const btn = document.getElementById("toggleTheme");
-const overlay = document.getElementById("overlay");
-
-let isNight = localStorage.getItem("theme") === "night";
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-// preload immagini
-function preload(src){
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = resolve;
-    img.src = src;
-  });
-}
-
-// aggiorna tema
+// TEMA
 function updateTheme(){
   container.style.backgroundImage =
     `url("${isNight ? imgNight : imgDay}")`;
@@ -244,100 +184,38 @@ function updateTheme(){
   overlay.style.background =
     isNight ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.25)";
 
-  container.style.filter =
-    isNight ? "brightness(0.85) contrast(1.1)" : "brightness(1)";
-
   btn.textContent = isNight ? "☀️" : "🌙";
 }
 
-// AVVIO
-async function start(){
-  await Promise.all([preload(imgDay), preload(imgNight)]);
+// AVVIO SICURO
+function start(){
   updateTheme();
 
-  // MOSTRA SITO
   container.classList.add("loaded");
 
-  // NASCONDE INTRO
   setTimeout(() => {
     document.getElementById("intro").classList.add("hide");
   }, 1200);
 }
 
-
-  // WELCOME
-  setTimeout(() => {
-    document.getElementById("welcome").style.opacity = "1";
-  }, 300);
-
-  setTimeout(() => {
-    document.getElementById("welcome").style.opacity = "0";
-  }, 2500);
-
-setTimeout(() => {
-  document.getElementById("intro").classList.add("show");
-}, 100);
-
-start();
-setTimeout(() => {
-  document.getElementById("intro").classList.add("hide");
-}, 1500);
-async function start(){
-  await Promise.all([preload(imgDay), preload(imgNight)]);
-  updateTheme();
-
-  // mostra contenuto
-  container.classList.add("loaded");
-
-  // nasconde intro DOPO poco
-  setTimeout(() => {
-    document.getElementById("intro").classList.add("hide");
-  }, 1200); // 👈 più veloce
-}
-
-
+window.onload = start;
 
 // SWITCH
 btn.addEventListener("click", () => {
   isNight = !isNight;
   updateTheme();
-  localStorage.setItem("theme", isNight ? "night" : "day");
 });
 
-// MENU (SMART)
+// MENU
 function openMenu(file){
 
-  // vibrazione (prima di tutto)
   if (navigator.vibrate) navigator.vibrate(10);
 
-  // MOBILE → apre PDF normale
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     window.location.href = file;
     return;
   }
 
-  // DESKTOP → overlay
-  const box = document.getElementById("menuBox");
-  const frame = document.getElementById("menuFrame");
-
-  frame.src = file;
-  box.style.display = "block";
-
-  setTimeout(() => box.classList.add("active"), 10);
-}
-
-
-
-{
-
-
-  // MOBILE → apre normale (perfetto scroll)
-  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    window.open(file, "_blank");
-    return;
-  }
-
-  // DESKTOP → overlay elegante
   const box = document.getElementById("menuBox");
   const frame = document.getElementById("menuFrame");
 

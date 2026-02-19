@@ -22,7 +22,6 @@ html, body {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-<div id="welcome">Welcome to Pool Bar</div>
 
   opacity: 0;
   transform: scale(1.05);
@@ -41,7 +40,21 @@ html, body {
   transition: background 0.5s ease;
 }
 
-/* CLICK AREE */
+/* WELCOME */
+#welcome {
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-align: center;
+  color: #D4AF37;
+  font-size: 26px;
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: 1s;
+  z-index: 5;
+}
+
+/* BOTTONI */
 .area {
   position: absolute;
   display: block;
@@ -52,48 +65,6 @@ html, body {
 .area:active {
   transform: scale(0.96);
   box-shadow: 0 0 20px rgba(212,175,55,0.5);
-}
-  <style>
-
-#menuBox {
-  position: fixed;
-  inset: 0;
-  background: black;
-  display: none;
-  z-index: 100;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-/* 👇 AGGIUNGI QUI */
-#loader {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  text-align: center;
-  color: white;
-  font-size: 18px;
-}
-
-
-
-#welcome {
-  position: absolute;
-  top: 45%;
-  width: 100%;
-  text-align: center;
-  color: #D4AF37;
-  font-size: 28px;
-  letter-spacing: 3px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 1s ease;
-  z-index: 5;
-}
-
-#welcome.show {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* SWITCH */
@@ -110,7 +81,7 @@ html, body {
   font-size: 14px;
 }
 
-/* MENU OVERLAY */
+/* MENU DESKTOP */
 #menuBox {
   position: fixed;
   inset: 0;
@@ -130,8 +101,6 @@ html, body {
   width: 100%;
   height: 100%;
   border: none;
-  <div id="loader">Loading...</div>
-
 }
 
 #menuBox button {
@@ -153,31 +122,34 @@ html, body {
 <div id="container">
   <div id="overlay"></div>
 
+  <!-- WELCOME -->
+  <div id="welcome">Welcome to Pool Bar</div>
+
   <!-- SWITCH -->
   <button id="toggleTheme">🌙</button>
 
-  <!-- 🍸 DRINK -->
-  <a onclick="openMenu('Drink.pdf')"
+  <!-- DRINK -->
+  <a onclick="openMenu('drink.pdf')"
      class="area"
      style="top:37%; left:10%; width:80%; height:10%;">
   </a>
 
-  <!-- 🥪 SNACK -->
-  <a onclick="openMenu('Drink.pdf')"
+  <!-- SNACK -->
+  <a onclick="openMenu('snack.pdf')"
      class="area"
      style="top:61%; left:10%; width:80%; height:10%;">
   </a>
 
 </div>
 
-<!-- MENU -->
+<!-- MENU DESKTOP -->
 <div id="menuBox">
   <button onclick="closeMenu()">✕</button>
   <iframe id="menuFrame"></iframe>
 </div>
 
 <script>
-// 🔗 IMMAGINI
+// IMMAGINI
 const imgDay = "https://edocalca.github.io/PoolBar-Menu/Foto-Giorno.jpg";
 const imgNight = "https://edocalca.github.io/PoolBar-Menu/Foto-Notte.jpg";
 
@@ -186,33 +158,8 @@ const btn = document.getElementById("toggleTheme");
 const overlay = document.getElementById("overlay");
 
 let isNight = localStorage.getItem("theme") === "night";
-const preloadDrink = new Image();
-preloadDrink.src = "Drink Menu.pdf";
 
-const preloadSnack = new Image();
-preloadSnack.src = "Drink Menu.pdf";
-
-  function openMenu(file){
-  const box = document.getElementById("menuBox");
-  const frame = document.getElementById("menuFrame");
-  const loader = document.getElementById("loader");
-
-  loader.style.display = "block";
-  frame.style.display = "none";
-
-  frame.src = file;
-
-  frame.onload = () => {
-    loader.style.display = "none";
-    frame.style.display = "block";
-  };
-
-  box.style.display = "block";
-  setTimeout(() => box.classList.add("active"), 10);
-}
-
-
-// preload
+// preload immagini
 function preload(src){
   return new Promise(resolve => {
     const img = new Image();
@@ -235,7 +182,7 @@ function updateTheme(){
   btn.textContent = isNight ? "☀️" : "🌙";
 }
 
-// avvio
+// AVVIO
 async function start(){
   await Promise.all([preload(imgDay), preload(imgNight)]);
   updateTheme();
@@ -243,32 +190,42 @@ async function start(){
   setTimeout(() => {
     container.classList.add("loaded");
   }, 50);
+
+  // WELCOME
+  setTimeout(() => {
+    document.getElementById("welcome").style.opacity = "1";
+  }, 300);
+
+  setTimeout(() => {
+    document.getElementById("welcome").style.opacity = "0";
+  }, 2500);
 }
 
 start();
-const welcome = document.getElementById("welcome");
 
-setTimeout(() => {
-  welcome.classList.add("show");
-}, 300);
-
-setTimeout(() => {
-  welcome.style.opacity = "0";
-}, 2500);
-
-// switch tema
+// SWITCH
 btn.addEventListener("click", () => {
   isNight = !isNight;
   updateTheme();
   localStorage.setItem("theme", isNight ? "night" : "day");
 });
 
-// MENU
+// MENU (SMART)
 function openMenu(file){
-  const box = document.getElementById("menuBox");
-  document.getElementById("menuFrame").src = file;
 
+  // MOBILE → apre normale (perfetto scroll)
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.open(file, "_blank");
+    return;
+  }
+
+  // DESKTOP → overlay elegante
+  const box = document.getElementById("menuBox");
+  const frame = document.getElementById("menuFrame");
+
+  frame.src = file;
   box.style.display = "block";
+
   setTimeout(() => box.classList.add("active"), 10);
 }
 

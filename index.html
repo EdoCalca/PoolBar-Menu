@@ -27,7 +27,17 @@ html, body {
   transform: scale(1.05);
   transition: opacity 0.8s ease, transform 1.2s ease, background-image 0.6s ease-in-out;
 }
-  
+  <div id="welcome">Welcome to Pool Bar</div>
+#welcome {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+  color: gold;
+  opacity: 0;
+  transition: 1s;
+}
+
 #menuBox {
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -60,6 +70,31 @@ html, body {
   transform: scale(0.96);
   box-shadow: 0 0 20px rgba(212,175,55,0.5);
 }
+#menuBox {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: none;
+  z-index: 100;
+}
+
+#menuBox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+#menuBox button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 101;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 5px 10px;
+}
 
 /* SWITCH GIORNO / NOTTE */
 #toggleTheme {
@@ -91,14 +126,12 @@ html, body {
 </div>
 
   <!-- 🍸 DRINK LIST -->
-  <a href="drink.pdf"
-     class="area"
+  <a onclick="openMenu('drink.pdf')" class="area">
      style="top:37%; left:10%; width:80%; height:10%;">
   </a>
 
   <!-- 🥪 SNACK MENU -->
-  <a href="snack.pdf"
-     class="area"
+ <a onclick="openMenu('snack.pdf')" class="area">
      style="top:61%; left:10%; width:80%; height:10%;">
   </a>
 
@@ -137,6 +170,19 @@ async function start(){
     container.classList.add("loaded");
   }, 50);
 }
+const lang = navigator.language;
+
+if(lang.startsWith("en")){
+  // apri menu inglese
+}
+function openMenu(file){
+  document.getElementById("menuFrame").src = file;
+  document.getElementById("menuBox").style.display = "block";
+}
+
+function closeMenu(){
+  document.getElementById("menuBox").style.display = "none";
+}
 
 start();
   
@@ -148,8 +194,13 @@ btn.addEventListener("click", () => {
 
   container.style.backgroundImage =
     `url("${isNight ? imgNight : imgDay}")`;
+  
+const h = new Date().getHours();
+  
+isNight = h >= 19 || h < 7;
 
   btn.textContent = isNight ? "☀️" : "🌙";
+navigator.vibrate(10);
 
   localStorage.setItem("theme", isNight ? "night" : "day");
 });
